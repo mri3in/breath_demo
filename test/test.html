@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="../js/customScript.js"></script>
+    <script src="../js/jquery-2.1.4.min.js"></script>
+
+    <script>
+        $(window).load(function () {
+//            $('input').attr({ readonly : false, value : "test", readonly : true});
+            $("#test_select").val("test 1");
+            var href = document.location.href;
+            var startPoint = href.lastIndexOf("/")+1;
+            console.log(startPoint);
+            var fileName = href.substr(href.lastIndexOf("/")+1);
+            var endPoint = fileName.indexOf(".");
+            console.log(endPoint);
+            var lengthName = endPoint - startPoint;
+            console.log("length: " + lengthName);
+            var realFileName = fileName.substr(0,endPoint);
+            console.log("real name: " + realFileName);
+        });
+    </script>
+</head>
+<body>
+<form action="test.php" method="post">
+    <label>enter number here</label>
+    create input for user to type the number in and see the format of number <br>
+    <input type="text" id="test_demo" onchange="addCommaTest(this.value, this.id, 'test')" value="" readonly>
+    <input type="text" id="test" name='test'  value="0">
+
+    <br><br>
+    When submit, the $_POST only get the value of hidden input.
+    <br>
+    <button type="submit" value="submit" >Submit</button>
+    <br>
+    <br>
+    <select id="test_select" onchange="testFunction(this.selectedIndex, this.value)">
+        <option value="test 1">Test 1</option>
+        <option value="123">123</option>
+        <option value="test">Test</option>
+        <option value="1">1</option>
+    </select>
+    <br><br>
+    <input name="searchbox" onfocus="if (this.value=='search') this.value = ''" type="text" value="search">
+
+
+
+</form>
+<script>
+    /**
+     * @purpose to convert the input number into thousand separator format
+     * @param number
+     * @param displayID
+     * @param hiddenID
+     * @references
+     *  JavaScript RegExp Reference: http://www.w3schools.com/jsref/jsref_obj_regexp.asp
+     *  JavaScript String replace() Method: http://www.w3schools.com/jsref/jsref_replace.asp
+     */     function addCommaTest(number, displayID, hiddenID) {
+        var d = String(number);
+
+        // remove all non-digit characters with nothing
+        // \d = Find a digit
+        // [^\d] = Find any character NOT between the brackets
+        // g = Perform a global match (find all matches)
+        d = d.replace(/[^\d]/g, '');
+
+        // remove all leading 0 with nothing
+        // ^0 = Matches any string with 0 at the beginning of it
+        // 0+ = Matches any string that contains at least one 0
+        d = d.replace(/^0+/, '');
+
+        // display the formatted number
+        document.getElementById(displayID).value = Number(d).toLocaleString();
+
+        // store the value to a hidden input for posting later to php
+        document.getElementById(hiddenID).setAttribute("value",d);
+    }
+
+    function testFunction(selectedIndexTest, value){
+        alert("selected Index: " + selectedIndexTest);
+        alert("value: " + value);
+    }
+</script>
+
+</body>
+</html>
